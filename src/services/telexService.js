@@ -10,12 +10,12 @@ class TelexService {
         'Authorization': `Bearer ${config.telex.apiKey}`,
         'Content-Type': 'application/json'
       }
-    })
+    });
   }
 
-  async pushBillingData(billingData) {
+  async sendBillUpdate(billingData) {
     try {
-      logger.info('Pushing billing data to Telex');
+      logger.info('Sending bill update to Telex');
 
       const payload = {
         integration_id: config.telex.integrationId,
@@ -23,15 +23,18 @@ class TelexService {
       };
 
       const  response = await this.client.post('integrations/push' , payload);
-      logger.info('Successfully pushed data to Telex', { 
+      logger.info('Successfully sent bill update to Telex', { 
         status: response.status, 
         requestId: response.headers['x-request-id'] || 'unknown'
       });
 
       return response.data;
     } catch (error) {
-      logger.error('Error pushing data to Telex', { error: error.message });
-      throw new Error(`Failed to push data to Telex: ${error.message}`);
+      logger.error('Error pushing data to Telex', {
+         error: error.message,
+         data: error.response?.data,
+        });
+      throw new Error(`Failed to send bill update to Telex: ${error.message}`);
     }
   }
 } 
