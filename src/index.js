@@ -6,6 +6,7 @@ const logger = require('./utils/logger');
 const { runBillTracker} = require('./services/index');
 
 const app = express();
+const port =  process.env.PORT || 3000;
 // validate required configuration before process startup
 try {
   config.validateConfig();
@@ -34,9 +35,6 @@ function initialize() {
   });
 }
 
-initialize();
-
-const port =  process.env.PORT || 3000;
 const start = async () => {
   try {
     app.listen(port, console.log(`Server listening on port ${port}...`));
@@ -44,5 +42,7 @@ const start = async () => {
    console.log(error);
     
   }
-}
+};
+
+initialize();
 start();
