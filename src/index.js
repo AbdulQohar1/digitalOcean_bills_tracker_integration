@@ -1,9 +1,11 @@
 // main app entry point
+const express = require('express');
 const cron = require('node-cron');
 const config = require('./config');
 const logger = require('./utils/logger');
 const { runBillTracker} = require('./services/index');
 
+const app = express();
 // validate required configuration before process startup
 try {
   config.validateConfig();
@@ -33,3 +35,15 @@ function initialize() {
 }
 
 initialize();
+
+const port =  process.env.PORT || 3000;
+
+const start = async () => {
+  try {
+    app.listen(port, console.log(`Server listening on port ${port}...`));
+  } catch (error) {
+   console.log(error);
+    
+  }
+}
+app.listen();
